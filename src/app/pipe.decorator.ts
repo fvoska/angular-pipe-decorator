@@ -23,8 +23,7 @@ export function Pipe(operators: Array<Function> | Function) {
       operatorsToPipe = [operators];
     }
 
-    source$.pipe.apply(source$, operatorsToPipe).subscribe((paramsWithContext: IContextWithArguments
-  ) => {
+    source$.pipe.apply(source$, operatorsToPipe).subscribe((paramsWithContext: IContextWithArguments) => {
       originalMethod.apply(paramsWithContext.context, paramsWithContext.arguments);
     });
 
