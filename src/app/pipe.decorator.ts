@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 
-export interface IParamsWithContext {
+export interface IContextWithArguments {
   context: any;
   arguments: IArguments;
 }
@@ -13,7 +13,8 @@ export function Pipe(operators: Array<Function> | Function) {
   ) {
     const originalMethod: Function = descriptor.value;
 
-    const source$: Subject<IParamsWithContext> = new Subject();
+    const source$: Subject<IContextWithArguments
+  > = new Subject();
 
     let operatorsToPipe: Array<Function>;
     if (operators instanceof Array) {
@@ -22,7 +23,8 @@ export function Pipe(operators: Array<Function> | Function) {
       operatorsToPipe = [operators];
     }
 
-    source$.pipe.apply(source$, operatorsToPipe).subscribe((paramsWithContext: IParamsWithContext) => {
+    source$.pipe.apply(source$, operatorsToPipe).subscribe((paramsWithContext: IContextWithArguments
+  ) => {
       originalMethod.apply(paramsWithContext.context, paramsWithContext.arguments);
     });
 
