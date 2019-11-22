@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "debounce-decorator": {
+    "pipe-decorator": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/debounce-decorator",
+            "outputPath": "dist/pipe-decorator",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -61,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "debounce-decorator:build"
+            "browserTarget": "pipe-decorator:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "debounce-decorator:build:production"
+              "browserTarget": "pipe-decorator:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "debounce-decorator:build"
+            "browserTarget": "pipe-decorator:build"
           }
         },
         "test": {
@@ -106,7 +106,7 @@
         }
       }
     },
-    "debounce-decorator-e2e": {
+    "pipe-decorator-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -115,11 +115,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "debounce-decorator:serve"
+            "devServerTarget": "pipe-decorator:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "debounce-decorator:serve:production"
+              "devServerTarget": "pipe-decorator:serve:production"
             }
           }
         },
@@ -135,5 +135,5 @@
       }
     }
   },
-  "defaultProject": "debounce-decorator"
+  "defaultProject": "pipe-decorator"
 }
