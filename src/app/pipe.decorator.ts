@@ -60,14 +60,16 @@ export function Pipe(operators: Array<Function> | Function, {
           },
         );
 
-        const originalDestroy: Function = target[destroyCallbackName];
-        target[destroyCallbackName] = function() {
-          if (debug) { console.log('Unsubscribed'); }
-          subscription.unsubscribe();
-          source$ = null;
+        if (destroyCallbackName) {
+          const originalDestroy: Function = target[destroyCallbackName];
+          target[destroyCallbackName] = function() {
+            if (debug) { console.log('Unsubscribed'); }
+            subscription.unsubscribe();
+            source$ = null;
 
-          if (originalDestroy) {
-            originalDestroy.call(this);
+            if (originalDestroy) {
+              originalDestroy.call(this);
+            }
           }
         }
       }
