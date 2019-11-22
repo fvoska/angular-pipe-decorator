@@ -1,18 +1,22 @@
 import { Subject, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 interface IPipeDecoratorOptions {
   destroyCallbackName?: string;
   debug?: boolean;
+  preventRemap?: boolean;
 }
 
 export const defaultOptions: IPipeDecoratorOptions = {
   destroyCallbackName: 'ngOnDestroy',
   debug: false,
+  preventRemap: true,
 }
 
 export function Pipe(operators: Array<Function> | Function, {
   debug = defaultOptions.debug,
   destroyCallbackName = defaultOptions.destroyCallbackName,
+  preventRemap = defaultOptions.preventRemap,
 } = defaultOptions) {
   return function (
     target: any, // Object's prototype
@@ -33,13 +37,28 @@ export function Pipe(operators: Array<Function> | Function, {
       operatorsToPipe = [operators];
     }
 
+    const boxedArguments: { arguments: IArguments } = {
+      arguments: null,
+    };
+
     descriptor.value = function () {
       _this = this;
+      boxedArguments.arguments = arguments;
 
       if (!source$) {
         if (debug) { console.log(`Creating subscription`); }
         source$ = new Subject();
-        subscription = createSubscription(source$, operatorsToPipe, originalMethod, _this, debug);
+        subscription = createSubscription(
+          source$,
+          operatorsToPipe,
+          originalMethod,
+          _this,
+          boxedArguments,
+          {
+            debug,
+            preventRemap,
+          },
+        );
 
         const originalDestroy: Function = target[destroyCallbackName];
         target[destroyCallbackName] = function() {
@@ -53,7 +72,7 @@ export function Pipe(operators: Array<Function> | Function, {
         }
       }
 
-      source$.next(arguments);
+      source$.next(boxedArguments.arguments);
     };
   };
 }
@@ -63,13 +82,19 @@ function createSubscription(
   operatorsToPipe: Array<Function>,
   originalMethod: Function,
   _this: any,
-  debug: boolean,
+  boxedArguments: { arguments: IArguments },
+  options: IPipeDecoratorOptions,
 ): Subscription {
   return source$.pipe.apply(
     source$,
-    operatorsToPipe,
+    [
+      ...operatorsToPipe,
+      ...(options.preventRemap ? [map(() => {
+        return boxedArguments.arguments;
+      })] : []),
+    ]
   ).subscribe((args: IArguments) => {
-    if (debug) { console.log('Calling original handler with:', args); }
+    if (options.debug) { console.log('Calling original handler with:', args); }
     originalMethod.apply(_this, args);
   });
 }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, HostListener, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
-import { debounceTime, distinctUntilChanged, tap, auditTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap, auditTime, map } from 'rxjs/operators';
 import { Pipe } from '../../pipe.decorator';
 import { IntervalService } from '../../services/interval/interval.service';
 import { Subscription } from 'rxjs';
@@ -14,9 +14,9 @@ export class SearchComponent implements OnDestroy {
   private sub: Subscription;
 
   constructor(interval: IntervalService) {
-    this.sub = interval.interval$.subscribe((n) => {
-      this.processTick(n);
-    })
+    // this.sub = interval.interval$.subscribe((n) => {
+    //   this.processTick(n);
+    // })
   }
 
   @Pipe([
@@ -33,13 +33,7 @@ export class SearchComponent implements OnDestroy {
 
       return prevParams[0] === currentParams[0] && prevParams[1] === currentParams[1];
     }),
-    // map(([value, extra]) => [value * 100, extra])
-    tap(function() {
-      console.log('This:', this);
-    }),
-    tap(() => {
-      console.log('Arrow this:', this);
-    })
+    map(([value, extra]) => [value * 100, extra]),
   ], { debug: false })
   public pipedOnInputChanged(value: string, someExtraStuff: number): void {
     //                       arguments[0]   arguments[1]
@@ -63,6 +57,8 @@ export class SearchComponent implements OnDestroy {
 
   public ngOnDestroy(): void {
     console.log('Component destroyed');
-    this.sub.unsubscribe();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }
