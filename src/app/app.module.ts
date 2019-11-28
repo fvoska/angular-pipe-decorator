@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { SearchComponent } from './components/search/search.component';
 import { SearchModule } from './components/search/search.module';
+import { ResizeListenerComponent } from './components/resize-listener/resize-listener.component';
+import { ResizeListenerModule } from './components/resize-listener/resize-listener.module';
 
 @NgModule({
   declarations: [
@@ -13,17 +15,18 @@ import { SearchModule } from './components/search/search.module';
   imports: [
     BrowserModule,
     SearchModule,
+    ResizeListenerModule,
     RouterModule.forRoot([
       {
         path: '',
         children: [
           {
-            path: 'search-1',
+            path: 'search',
             component: SearchComponent,
           },
           {
-            path: 'search-2',
-            component: SearchComponent,
+            path: 'resize-listener',
+            component: ResizeListenerComponent,
           }
         ]
       }

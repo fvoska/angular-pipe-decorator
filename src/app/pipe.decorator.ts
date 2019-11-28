@@ -11,7 +11,7 @@ export const defaultOptions: IPipeDecoratorOptions = {
   destroyCallbackName: 'ngOnDestroy',
   debug: false,
   preventRemap: true,
-}
+};
 
 export function Pipe(operators: Array<Function> | Function, {
   debug = defaultOptions.debug,
@@ -70,7 +70,7 @@ export function Pipe(operators: Array<Function> | Function, {
             if (originalDestroy) {
               originalDestroy.call(this);
             }
-          }
+          };
         }
       }
 

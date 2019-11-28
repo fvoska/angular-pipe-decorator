@@ -4,9 +4,9 @@ import { IntervalService } from './services/interval/interval.service';
 @Component({
   selector: 'app-root',
   template: `
-    <a routerLink="/">Home</a>
-    <a routerLink="/search-1">Search 1</a>
-    <a routerLink="/search-2">Search 2</a>
+    <a routerLink="/">Home</a> |
+    <a routerLink="/search">Search</a> |
+    <a routerLink="/resize-listener">Resize Listener</a>
 
     <hr>
 
