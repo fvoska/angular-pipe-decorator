@@ -31,10 +31,6 @@ export class SearchComponent {
 
       return prevParams[0] === currentParams[0] && prevParams[1] === currentParams[1];
     }),
-    tap({
-      next: function() { console.log(this); },
-    }),
-    tap(() => console.log(this)),
     map(([value, extra]) => [value * 100, extra]),
   ])
   public pipedOnInputChanged(value: string, someExtraStuff: number): void {
